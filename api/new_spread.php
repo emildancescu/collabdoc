@@ -1,16 +1,13 @@
 <?php
 
 require('dbinfo.php');
-/*
+
 if (!$_SESSION['user']) exit();
 
 $userid = mysql_real_escape_string($_SESSION['user']['id']);
 $docname = mysql_real_escape_string($_POST['docname']);
-*/
-$response = array();
 
-$userid = $_GET['userid'];
-$docname = $_GET['docname'];
+$response = array();
 
 if ($docname == "") {
 	$response['status'] = 'error';
@@ -34,13 +31,7 @@ if (mysql_num_rows($result) > 0) {
 $query = "INSERT INTO spreadsheets (fk_userID, docname) VALUES ('$userid', '$docname')";
 $result = mysql_query($query);
 
-while ($row = mysql_fetch_assoc($result)) {
-	$id = $row['id'];
-}
-
 $response['status'] = 'OK';
-$response['id'] = $id;
-$response['docname'] = $docname;
 
 echo json_encode($response);
 
