@@ -37,7 +37,7 @@ if ($email == "" || $pass == "" || $pass_conf == "" || $name == "")
 
 
 // check if the email address is already registered
-$query = "SELECT * FROM users WHERE email=" . $email;
+$query = "SELECT * FROM users WHERE email='" . $email . "'";
 $result = mysql_query($query);
 
 // if there's already an user registered with that email
@@ -53,11 +53,11 @@ if (mysql_num_rows($result) > 0)
 }
 
 // insert the data for the new account in the database
-$query = "INSERT INTO users (email, pass, fullname) VALUES (" . $email . ", " . $pass . ", " . $name . ")";
+$query = "INSERT INTO users (email, pass, fullname) VALUES ('" . $email . "', '" . $pass . "', '" . $name . "')";
 $result = mysql_query($query);
 
 // retrieve data for the account (need to do this because we don't have the user id)
-$query = "SELECT * FROM users WHERE email=" . $email;
+$query = "SELECT * FROM users WHERE email='" . $email . "'";
 $result = mysql_query($query);
 
 while ($row = mysql_fetch_assoc($result))
