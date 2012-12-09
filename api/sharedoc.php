@@ -2,8 +2,38 @@
 
 session_start();
 
+// check if the user is logged in and stop the request if he is not
+if ($_SESSION['user'] == null)
+{
+	$response = array();
+	$response['status'] = 'error';
+	$response['errors'] = array();
+	$response['errors']['email'] = "You must be logged in to share this document";
+	
+	echo json_encode($response);
+	exit();
+}
+
 $userEmail = mysql_real_escape_string($_POST['email']);
 $docId = mysql_real_escape_string($_POST['docID']);
+
+// check if the specified document exists
+$query = "SELECT * FROM spreadsheets WHERE id=" . $docId;
+$result = mysql_query($query);
+
+if (mysql_num_rows($result) == 0)
+{
+	$response = array();
+	$response['status'] = 'error';
+	$response['errors'] = array();
+	$response['errors']['docID'] = "Internal error: There is no document with that docID";
+	
+	echo json_encode($response);
+	exit();
+}
+
+// check if the user making the request has rights on the specified document
+//$query = "SELECT * FROM spreadsheets WHERE id=" . $docId . " AND ";
 
 // if any user input is missing or invalid, show an error message
 if ($userEmail == "" || $docId == "")
