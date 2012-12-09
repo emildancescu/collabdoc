@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 require('dbinfo.php');
 
 $email = mysql_real_escape_string($_POST['email']);
