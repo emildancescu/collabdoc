@@ -10,7 +10,7 @@ $pass_conf = mysql_real_escape_string($_POST['pass_conf']);
 $name = mysql_real_escape_string($_POST['name']);
 
 // if any user input is missing or invalid, show an error message
-if ($email == "" || $pass == "" || $pass_conf == "" || $name == "")
+if ($email == "" || $pass == "" || $pass_conf == "" || $name == "" || $pass_conf != $pass)
 {
 	$response = array();
 	$response['status'] = 'error';
