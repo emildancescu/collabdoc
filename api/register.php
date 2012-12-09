@@ -52,8 +52,11 @@ if (mysql_num_rows($result) > 0)
 	exit();
 }
 
+// hash the password for use below
+$hashedPass = md5($pass);
+
 // insert the data for the new account in the database
-$query = "INSERT INTO users (email, pass, fullname) VALUES ('" . $email . "', '" . $pass . "', '" . $name . "')";
+$query = "INSERT INTO users (email, pass, fullname) VALUES ('" . $email . "', '" . $hashedPass . "', '" . $name . "')";
 $result = mysql_query($query);
 
 // retrieve data for the account (need to do this because we don't have the user id)
