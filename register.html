@@ -29,31 +29,34 @@
 		$('#register-btn').click(function() {
 			
 			$.post('api/register.php', $('#register-form').serialize(), function(response) {
-				console.log(response);
+				//console.log(response);
 				
 				//clear all errors
-				$('#errors').html('');
+				$('#errors').html('').hide();
 				
 				if (response.status == 'error') {
 					for (var i in response.errors) {
 					
 						var alert = $('<div>').addClass('alert alert-error fade in');
 						var btn = $('<button>').addClass('close').attr({'type':'button', 'data-dismiss':'alert'}).text('x');
-						var msg = $('<strong>').text(response.errors[i]);
+						var msg = $('<small>').text(response.errors[i]);
 						
 						alert.append(btn).append(msg);
 						
 						$('#errors').append(alert);
 					}
+					
+					$('#errors').fadeIn('fast');
+					
 				} else {
 				
-					$('#register-form').reset().hide();
+					$('#register-form input, #register-form button').attr('disabled', 'disabled');
 				
 					$("#success").fadeIn('fast');
 					
 				}
 				
-			}, 'json');
+			});
 			
 		});
 		
