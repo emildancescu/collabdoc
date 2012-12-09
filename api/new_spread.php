@@ -5,7 +5,7 @@ require('dbinfo.php');
 if (!$_SESSION['user']) exit();
 
 $userid = mysql_real_escape_string($_SESSION['user']['name']);
-$docname = mysql_real_escape_string($_POST['name']);
+$docname = mysql_real_escape_string($_POST['docname']);
 $response = array();
 
 if ($spreadsheet_name == "") {
