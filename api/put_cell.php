@@ -14,6 +14,15 @@ $response = array();
 
 $query = "select * from spreadsheets where (fk_userID ='$userid'
          or id=(select fk_sheetID from sp_rights where fk_userID='$userid')) and id='$docid'";
+$result = mysql_query($query);		 
+
+ if (mysql_num_rows($result) == 0) {
+	$response['status'] = 'error';
+	$response['errors'] = array();
+	$response['errors']['docname'] = "You don't have rights to edit this";
+	echo json_encode($response);
+	exit();
+}
 $result = mysql_query($query);
 $files = array();
 
