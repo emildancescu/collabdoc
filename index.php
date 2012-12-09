@@ -67,7 +67,7 @@ if (!isset($_SESSION['user'])) {
 	
 	<div>
 	
-		<table id="#docs" class="table table-striped">
+		<table id="docs" class="table table-striped">
 			
 			<thead>
 				<tr>
