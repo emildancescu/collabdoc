@@ -37,7 +37,7 @@
 				if (response.status == 'error') {
 					for (var i in response.errors) {
 					
-						var alert = $('<div>').addClass('alert', 'alert-error', 'fade', 'in');
+						var alert = $('<div>').addClass('alert alert-error fade in');
 						var btn = $('<button>').addClass('close').attr({'type':'button', 'data-dismiss':'alert'}).text('x');
 						var msg = $('<strong>').text(response.errors[i]);
 						
@@ -46,7 +46,11 @@
 						$('#errors').append(alert);
 					}
 				} else {
-					$("#success").alert();			
+				
+					$('#register-form').reset().hide();
+				
+					$("#success").fadeIn('fast');
+					
 				}
 				
 			}, 'json');
@@ -67,7 +71,7 @@
 			
 		</div>
 		
-		<div id="success" class="alert alert-success fade in" style="display: none;">
+		<div id="success" class="alert alert-success" style="display: none;">
 			<button type="button" class="close" data-dismiss="alert">×</button>
 			<p>Registration succesful!</p>
 			<p>
