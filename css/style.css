@@ -1,0 +1,89 @@
+#header {
+	
+}
+
+#document-title-container {
+	margin: 10px;
+	color: #000;
+	cursor: pointer;
+}
+
+#document-title {
+	font-weight: bold;
+	font-size: 16px;
+}
+
+#doc-wrapper {
+	overflow: hidden;
+}
+
+#column-header {
+	overflow: hidden;
+}
+
+#row-header {
+	margin-top: -1px;
+	height: 0;
+	float: left;
+	overflow: hidden;
+}
+
+#table-wrapper {
+	overflow: auto;
+}
+
+#table-container {
+	margin: -1px 0 0 -1px;
+	
+	-moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.cell {
+	width: 120px;
+	padding: 5px;
+	border: 1px solid #CCC;
+	overflow: hidden;
+}
+
+.cell-selected {
+	background: #cae9fd;
+}
+
+.header-cell {
+	background: #F2F2F2;
+	text-align: center;
+	color: #999;
+	font-size: 12px;
+}
+
+.row-header-cell {
+	width: 40px;
+}
+
+.unused {
+	position: absolute;
+	z-index: 1;
+	background: #DDD;
+}
+
+
+/* cell styles */
+.style-bold {
+	font-weight: bold;
+}
+
+.style-italic {
+	font-style: italic;
+}
+
+
+
+/* bootstrap overrides */
+.modal-small {
+	width: 360px;
+	margin: -150px 0 0 -180px;
+}
