@@ -25,7 +25,7 @@ if ($email == "" || $pass == "")
 }
 
 // check if the email address is registered and check if the user gave the correct password
-$query = "SELECT * FROM users WHERE email=" . $email . " AND pass=" . $pass;
+$query = "SELECT * FROM users WHERE email='" . $email . "' AND pass='" . $pass . "'";
 $result = mysql_query($query);
 
 // if there are no users registered with that e-mail or the password is invalid, show an error message
