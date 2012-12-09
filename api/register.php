@@ -22,7 +22,7 @@ if ($email == "" || $pass == "" || $pass_conf == "" || $name == "")
 	if ($pass == "")
 		$response['errors']['pass'] = "You must provide a password";
 		
-	if ($pass_conf == "")
+	if ($pass_conf == "" && $pass != "")
 		$response['errors']['pass_conf'] = "You must provide a password confirmation";	
 	
 	if ($pass_conf != $pass && $pass != "" && $pass_conf != "")
