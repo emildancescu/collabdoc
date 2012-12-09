@@ -1,12 +1,16 @@
 <?php
 
 require('dbinfo.php');
-
+/*
 if (!$_SESSION['user']) exit();
 
-$userid = mysql_real_escape_string($_SESSION['user']['name']);
+$userid = mysql_real_escape_string($_SESSION['user']['id']);
 $docname = mysql_real_escape_string($_POST['docname']);
+*/
 $response = array();
+
+$userid = $_GET['userid'];
+$docname = $_GET['docname'];
 
 if ($spreadsheet_name == "") {
 	$response['status'] = 'error';
