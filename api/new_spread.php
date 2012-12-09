@@ -12,7 +12,7 @@ $response = array();
 $userid = $_GET['userid'];
 $docname = $_GET['docname'];
 
-if ($spreadsheet_name == "") {
+if ($docname == "") {
 	$response['status'] = 'error';
 	$response['errors'] = array();
 	$response['errors']['docname'] = "You must provide a name";
