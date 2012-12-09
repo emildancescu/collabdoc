@@ -1,3 +1,11 @@
+<?php  
+
+session_start();
+
+
+
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -8,6 +16,7 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
 	<script src="js/jquery-1.8.2.min.js" type="text/javascript"></script>
 	<script src="js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="js/main.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -23,7 +32,7 @@
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">File <b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="#"><i class="icon-file"></i> New</a></li>
+							<li><a id="new-file" href="#"><i class="icon-file"></i> New file</a></li>
 							<li class="divider"></li>
 							<li><a href="#"><i class="icon-print"></i> Print</a></li>
 						</ul>
@@ -35,14 +44,14 @@
 				
 					<div class="btn-group">
 						<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-							<i class="icon-user"></i> username
+							<i class="icon-user"></i> <?php echo $_SESSION['user']['fullname']; ?>
 							<span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu pull-right">
 						<!-- dropdown menu links -->
 							<li><a href="#">Edit profile</a></li>
 							<li class="divider"></li>
-							<li><a href="#">Logout</a></li>
+							<li><a href="api/logout.php">Logout</a></li>
 						</ul>
 					</div>
 				</div>
@@ -56,21 +65,20 @@
 	
 	<div>
 	
-		<table class="table table-striped">
+		<table id="#docs" class="table table-striped">
 			
-			<tr>
-				<th>#</th>
-				<th>Document name</th>
-				<th>Creation date</th>
-				<th>Options</th>
-			</tr>
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Document name</th>
+					<th>Creation date</th>
+					<th>Options</th>
+				</tr>
+			</thead>
 			
-			<tr>
-				<td>1</td>
-				<td>Test spreadsheet</td>
-				<td>8 December 2012</td>
-				<td><a href="doc.html" target="_blank" class="btn btn-success">edit</a></td>
-			</tr>
+			<tbody>
+				
+			</tbody>
 						
 		</table>
 	
