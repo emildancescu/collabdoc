@@ -15,7 +15,7 @@ if ($email == "" || $pass == "")
 	$response['errors'] = array();
 	
 	if ($email == "")
-		$response['errors']['email'] = "You must provide an username";
+		$response['errors']['email'] = "You must provide an e-mail address";
 	
 	if ($pass == "")
 		$response['errors']['pass'] = "You must provide a password";
