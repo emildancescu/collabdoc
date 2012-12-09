@@ -109,17 +109,14 @@ function init() {
 	
 	$('#bold-btn').click(function() {
 		getSelectedCell().toggleClass('style-bold');
-		//return false;
 	});
 	
 	$('#italic-btn').click(function() {
 		getSelectedCell().toggleClass('style-italic');
-		//return false;
 	});
 	
 	$('.align-btn').click(function() {
 		getSelectedCell().css('text-align', $(this).attr('data-align'));
-		//return false;
 	});
 	
 }
