@@ -159,6 +159,8 @@ function generateColumnHeader() {
 		tr.append(d);
 	}
 	
+	tr.css('padding-right', '30px');
+	
 	table.append(tr);
 	$('#column-header').append(table);
 }
@@ -173,6 +175,8 @@ function generateRowHeader() {
 		tr.append(d);
 		table.append(tr);
 	}
+	
+	tr.css('padding-bottom', '30px');
 	
 	$('#row-header').append(table);
 }
