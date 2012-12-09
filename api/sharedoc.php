@@ -2,6 +2,8 @@
 
 session_start();
 
+require('dbinfo.php');
+
 // check if the user is logged in and stop the request if he is not
 if ($_SESSION['user'] == null)
 {
@@ -16,6 +18,7 @@ if ($_SESSION['user'] == null)
 
 $userEmail = mysql_real_escape_string($_POST['email']);
 $docId = mysql_real_escape_string($_POST['docID']);
+$ownerId = 0; // will be retrieved later on
 
 // if any user input is missing or invalid, show an error message
 if ($userEmail == "" || $docId == "")
@@ -52,15 +55,17 @@ if (mysql_num_rows($result) == 0)
 // check if the user making the request has rights on the specified document
 while ($row = mysql_fetch_assoc($result))
 {
+	$ownerId = $row['fk_userId'];
+
 	// if the user is not the owner of the document
 	if ($_SESSION['user']['id'] != $row['fk_userID'])
 	{
 		// check the sp_rights table to see if the user was previously given rights on the document
-		$query = "SELECT * FROM sp_rights WHERE fk_userID=" . $_SESSION['user']['id'] . " AND fk_sheetID=" . $docId;
-		$result = mysql_query($query);
+		$rightsQuery = "SELECT * FROM sp_rights WHERE fk_userID=" . $_SESSION['user']['id'] . " AND fk_sheetID=" . $docId;
+		$rightsResult = mysql_query($rightsQuery);
 		
 		// if we did not find any entry that gives the user rights on the document, show an error message
-		if (mysql_num_rows($result) == 0)
+		if (mysql_num_rows($rightsResult) == 0)
 		{
 			$response = array();
 			$response['status'] = 'error';
@@ -76,7 +81,7 @@ while ($row = mysql_fetch_assoc($result))
 }
 
 // retrieve the ID associated with the specified e-mail
-$query = "SELECT id FROM users WHERE email='" . $email . "'";
+$query = "SELECT id FROM users WHERE email='" . $userEmail . "'";
 $result = mysql_query($query);
 
 // if the specified e-mail is not an registered user, show an error message
@@ -102,8 +107,8 @@ while ($row = mysql_fetch_assoc($result))
 $query = "SELECT * FROM sp_rights WHERE fk_userID=" . $userId . " AND fk_sheetID=" . $docId;
 $result = mysql_query($query);
 
-// if the user already has rights on this document, show an error message
-if (mysql_num_rows($result) > 0)
+// if the user already has rights on this document or he is the owner of that document, show an error message
+if (mysql_num_rows($result) > 0 || $ownerId == $userId)
 {
 	$response = array();
 	$response['status'] = 'error';
