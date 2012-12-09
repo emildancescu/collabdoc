@@ -23,7 +23,7 @@ if ($docname == "") {
 //Check if user already has a spreadsheet with that name
 $query = "Select id from spreadsheets where fk_userid = $userid and docname is '$docname'";
 $result = mysql_query($query);
-if (mysql_num_rows($result) == 0) {
+if (mysql_num_rows($result) > 0) {
 	$response['status'] = 'error';
 	$response['errors'] = array();
 	$response['errors']['docname'] = "You already have a spreadsheet with that name";
