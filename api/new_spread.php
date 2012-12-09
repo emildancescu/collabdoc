@@ -21,9 +21,9 @@ if ($docname == "") {
 }
 
 //Check if user already has a spreadsheet with that name
-$query = "Select id from SPREADSHEETS where fk_userid = " + $userid + "and spreadname is '" + $docname + "'";
+$query = "Select id from spreadsheets where fk_userid = $userid and docname is '$docname'";
 $result = mysql_query($query);
-if (mysql_num_rows($result)) {
+if (mysql_num_rows($result) == 0) {
 	$response['status'] = 'error';
 	$response['errors'] = array();
 	$response['errors']['docname'] = "You already have a spreadsheet with that name";
@@ -31,11 +31,11 @@ if (mysql_num_rows($result)) {
 	exit();
 }
 
-$query = "INSERT INTO SPREADSHEETS ('fk_userid', 'spreadname') VALUES('" + $docname + " , " + $userid + "')";
+$query = "INSERT INTO spreadsheets ('fk_userid', 'docname') VALUES('$docname', '$userid')";
 $result = mysql_query($query);
 
 while ($row = mysql_fetch_assoc($result)) {
-	$id = $row[id];
+	$id = $row['id'];
 }
 
 $response['status'] = 'OK';
