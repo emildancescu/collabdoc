@@ -2,9 +2,8 @@
 
 require('dbinfo.php');
 
-//if (!$_SESSION['user']) exit();
-//$userid = mysql_real_escape_string($_SESSION['user']['id']);
-$userid = $_GET['user'];
+if (!$_SESSION['user']) exit();
+$userid = mysql_real_escape_string($_SESSION['user']['id']);
 
 $response = array();
 $response['status'] = 'OK';
