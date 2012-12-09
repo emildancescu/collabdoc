@@ -32,11 +32,43 @@ if (mysql_num_rows($result) == 0)
 	$response = array();
 	$response['status'] = 'error';
 	$response['errors'] = array();
-	$response['error'];
+	$response['errors']['email'] = "There is no user registered with that e-mail address";
+	
+	echo json_encode($response);
+	exit();
+}
+
+// we managed to retrieve user information for the given e-mail, extract the user's ID
+while ($row = mysql_fetch_assoc($result))
+{
+	// store the account data in the SESSION global var
+	$userId = $row['id'];
 }
 
 // check if the email address already has rights on the specified document
-$query = "SELECT * FROM sp_rights WHERE fk_='" . $email . "' AND pass='" . $pass . "'";
+$query = "SELECT * FROM sp_rights WHERE fk_userID=" . $userId . " AND fk_sheetID=" . $docId;
 $result = mysql_query($query);
+
+// if the user already has rights on this document, show an error message
+if (mysql_num_rows($result) > 0)
+{
+	$response = array();
+	$response['status'] = 'error';
+	$response['errors'] = array();
+	$response['errors']['email'] = "The document is already shared with this user";
+	
+	echo json_encode($response);
+	exit();
+}
+
+// if we've gotten this far, insert a new right for the given user on the given document
+$query = "INSERT INTO sp_rights (fk_userID, fk_sheetID) VALUES (" . $userId . ", " . $docId . ")";
+$result = mysql_query($query);
+
+// notify of success via json
+$response = array();
+$response['status'] = "ok";
+
+echo json_encode($response);
 
 ?>
