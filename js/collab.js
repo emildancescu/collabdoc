@@ -35,9 +35,11 @@ var modal = {
 		var default_text = this.default_text;
 		var title = this.title;
 		
+		if (String.prototype.trim) default_text = default_text.trim();
+		
 		$('#input-dialog .dialog-title').text(title);
 		
-		$('#input-dialog input').val(default_text.trim());
+		$('#input-dialog input').val(default_text);
 		
 		$('#input-dialog').modal('show');
 	}
@@ -130,8 +132,14 @@ function adjustSize() {
 	var hh = $('#header').height(); 			//header height
 	var ch = $('#column-header').height();		//column header height
 	
-	$('#row-header').height(window.innerHeight - hh - ch);
-	$('#table-wrapper').height(window.innerHeight - hh - ch);
+	var h = $(window).height() - hh - ch;
+	
+	//scrollbar height IE fix
+	if ($.browser.msie && $.browser.version < 9) h -= 16;
+	
+	//max-height used for IE overflow fix
+	$('#row-header').css('max-height', h + 'px');
+	$('#table-wrapper').css('max-height', h + 'px');
 }
 
 function getUrlVars() {
@@ -159,7 +167,9 @@ function generateColumnHeader() {
 		tr.append(d);
 	}
 	
-	tr.css('padding-right', '30px');
+	//blank cell
+	d = $('<td>').addClass('cell header-cell row-header-cell').html('&nbsp;');
+	tr.append(d);
 	
 	table.append(tr);
 	$('#column-header').append(table);
@@ -176,7 +186,11 @@ function generateRowHeader() {
 		table.append(tr);
 	}
 	
-	tr.css('padding-bottom', '30px');
+	//blank cell
+	tr = $('<tr>');
+	d = $('<td>').addClass('cell header-cell row-header-cell').html('&nbsp;');
+	tr.append(d);
+	table.append(tr);
 	
 	$('#row-header').append(table);
 }
