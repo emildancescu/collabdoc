@@ -18,6 +18,7 @@ if (!isset($_SESSION['user'])) {
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
 	<script src="js/jquery-1.8.2.min.js" type="text/javascript"></script>
 	<script src="js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="js/modal.js" type="text/javascript"></script>
 	<script src="js/main.js" type="text/javascript"></script>
 </head>
 
@@ -34,7 +35,7 @@ if (!isset($_SESSION['user'])) {
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">File <b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a id="new-file" href="#"><i class="icon-file"></i> New file</a></li>
+							<li><a id="new-file" href="#"><i class="icon-file"></i> New document</a></li>
 							<li class="divider"></li>
 							<li><a href="#"><i class="icon-print"></i> Print</a></li>
 						</ul>
@@ -65,7 +66,7 @@ if (!isset($_SESSION['user'])) {
 	</div>
 	
 	
-	<div>
+	<div style="padding: 20px 50px;">
 	
 		<table id="docs" class="table table-striped">
 			
@@ -86,6 +87,23 @@ if (!isset($_SESSION['user'])) {
 	
 	</div>
 	
+	<!-- Modal -->
+	<div id="input-dialog" class="modal hide fade modal-small" tabindex="-1" role="dialog">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">×</button>
+			<h4 class="dialog-title"></h4>
+		</div>
+		
+		<div class="modal-body">
+			<div class="errors"></div>
+			<input type="text" name="text-field" style="width: 315px;" />
+		</div>
+		
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal">Cancel</button>
+			<button class="btn btn-primary btn-save">Save</button>
+		</div>
+	</div>
 	
 </body>
 

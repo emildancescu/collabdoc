@@ -21,6 +21,50 @@
 	}
 	
 	</style>
+	
+	<script type="text/javascript">
+	
+	$(document).ready(function() {
+		
+		$('#login-form').submit(function() {
+		
+			$.post('api/login.php', $(this).serialize(), function(response) {
+				//console.log(response);
+				
+				//clear all errors
+				$('#errors').html('').hide();
+				
+				if (response.status == 'error') {
+					for (var i in response.errors) {
+					
+						var alert = $('<div>').addClass('alert alert-error fade in');
+						var btn = $('<button>').addClass('close').attr({'type':'button', 'data-dismiss':'alert'}).html('&times;');
+						var msg = $('<small>').text(response.errors[i]);
+						
+						alert.append(btn).append(msg);
+						
+						$('#errors').append(alert);
+						
+						break;
+					}
+					
+					$('#errors').fadeIn('fast');
+					
+				} else {
+				
+					window.location.replace("index.php");
+					
+				}
+				
+			}, 'json');
+			
+			return false;
+			
+		});
+		
+	});
+	
+	</script>
 
 </head>
 
@@ -28,13 +72,17 @@
 	
 	<div class="container">
 	
+		<div id="errors">
+			
+		</div>
+	
 		<form id="login-form" action="index.html">
 			<h2>Please sign in</h2>
 			
 			<br />
 			
-			<input type="text" class="input-block-level" placeholder="Email address">
-			<input type="password" class="input-block-level" placeholder="Password">
+			<input type="text" class="input-block-level" placeholder="Email address" name="email">
+			<input type="password" class="input-block-level" placeholder="Password" name="pass">
 			
 			<label class="checkbox">
 				<input type="checkbox" value="remember-me"> Remember me
@@ -42,7 +90,7 @@
 			
 			<br />
 			
-			<button class="btn btn-primary" type="submit">Sign in</button>
+			<button class="btn btn-primary" type="submit" id="login-btn">Sign in</button>
 			<a href="register.html" class="btn pull-right">Register</a>
 		</form>
 			

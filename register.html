@@ -26,9 +26,9 @@
 	
 	$(document).ready(function() {
 		
-		$('#register-btn').click(function() {
+		$('#register-form').submit(function() {
 			
-			$.post('api/register.php', $('#register-form').serialize(), function(response) {
+			$.post('api/register.php', $(this).serialize(), function(response) {
 				//console.log(response);
 				
 				//clear all errors
@@ -38,12 +38,14 @@
 					for (var i in response.errors) {
 					
 						var alert = $('<div>').addClass('alert alert-error fade in');
-						var btn = $('<button>').addClass('close').attr({'type':'button', 'data-dismiss':'alert'}).text('x');
+						var btn = $('<button>').addClass('close').attr({'type':'button', 'data-dismiss':'alert'}).html('&times;');
 						var msg = $('<small>').text(response.errors[i]);
 						
 						alert.append(btn).append(msg);
 						
 						$('#errors').append(alert);
+						
+						break;
 					}
 					
 					$('#errors').fadeIn('fast');
@@ -57,6 +59,8 @@
 				}
 				
 			}, 'json');
+			
+			return false;
 			
 		});
 		
@@ -74,7 +78,7 @@
 			
 		</div>
 		
-		<div id="success" class="alert alert-success" style="display: none;">
+		<div id="success" class="alert alert-success hide">
 			<button type="button" class="close" data-dismiss="alert">×</button>
 			<p>Registration succesful!</p>
 			<p>
@@ -94,7 +98,7 @@
 			
 			<br /><br />
 			
-			<button class="btn btn-success" type="button" id="register-btn">Register</button>
+			<button class="btn btn-success" type="submit" id="register-btn">Register</button>
 		</form>
 	
 	</div> <!-- /container -->	

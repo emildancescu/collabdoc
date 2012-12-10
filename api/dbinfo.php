@@ -1,6 +1,6 @@
 <?
-$dbuser="root";
-$dbpass="desm1989";
+$dbuser="collab";
+$dbpass="collab@upb";
 $dbhost="localhost";
 $dbname="collabdoc";
 mysql_connect($dbhost, $dbuser, $dbpass) or die ('Nu ma pot conecta la baza de date!');
