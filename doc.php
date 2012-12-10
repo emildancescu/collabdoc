@@ -34,6 +34,10 @@ $docname = mysql_result($result, 0, 'docname');
 	<script src="js/bootstrap.min.js" type="text/javascript"></script>
 	<script src="js/modal.js" type="text/javascript"></script>
 	<script src="js/collab.js" type="text/javascript"></script>
+	
+	<script type="text/javascript">
+		var docID = <?php echo $docid; ?>;
+	</script>
 </head>
 
 <body>
@@ -64,7 +68,7 @@ $docname = mysql_result($result, 0, 'docname');
 				
 				<div class="pull-right">
 				
-					<button type="button" class="btn btn-primary" href="#"><i class="icon-share icon-white"></i> Share</button>
+					<button type="button" class="btn btn-primary" href="#" id="share-btn"><i class="icon-share icon-white"></i> Share</button>
 				
 				</div>
 				
@@ -109,6 +113,49 @@ $docname = mysql_result($result, 0, 'docname');
 		<div class="modal-footer">
 			<button class="btn" data-dismiss="modal">Cancel</button>
 			<button class="btn btn-primary btn-save">Save</button>
+		</div>
+	</div>
+	
+	
+	<!-- Share -->
+	<div id="share-dialog" class="modal hide fade" tabindex="-1" role="dialog">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">×</button>
+			<h4 class="dialog-title">Share document</h4>
+		</div>
+		
+		<div class="modal-body">
+			
+			<table id="users" class="table table-striped">
+			
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>E-mail</th>
+						<th>Rights</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					
+				</tbody>
+							
+			</table>
+			
+			<div class="errors">
+				
+			</div>
+			
+			<div class="input-prepend input-append" style="text-align: center;">
+				<span class="add-on">Share with</span>
+				<input class="input-xlarge" id="email" placeholder="E-mail" type="text">
+				<button class="btn btn-primary" type="button" id="add-user"><i class="icon-plus-sign icon-white"></i> Add user</button>
+			</div>
+			
+		</div>
+		
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal">Done</button>
 		</div>
 	</div>
 	

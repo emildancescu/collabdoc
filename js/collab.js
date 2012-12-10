@@ -76,6 +76,49 @@
 			getSelectedCell().css('text-align', $(this).attr('data-align'));
 		});
 		
+		$('#share-btn').click(function() {
+			$('#share-dialog').modal('show');
+			
+			getUsers();
+		});
+		
+		$('#add-user').click(function() {
+		
+			var email = $('#email').val();
+			
+			$.post('api/sharedoc.php', {'docID':docID, 'email':email}, function(response) {
+				
+				$('#share-dialog .errors').html('').hide();
+			
+				if (response.status == 'error') {
+					for (var i in response.errors) {
+					
+						var alert = $('<div>').addClass('alert alert-error fade in');
+						var btn = $('<button>').addClass('close').attr({'type':'button', 'data-dismiss':'alert'}).html('&times;');
+						var msg = $('<small>').text(response.errors[i]);
+						
+						alert.append(btn).append(msg);
+						
+						$('#share-dialog .errors').append(alert);
+						
+						break;
+					}
+					
+					$('#share-dialog .errors').fadeIn('fast');
+					
+				} else {
+				
+					getUsers();
+					
+					$('#email').val('');
+					
+				}
+
+			
+			}, 'json');
+			
+		});
+		
 	}
 	
 	function getSelectedCell() {
@@ -166,6 +209,40 @@
 		}
 		
 		$('#table-container').append(table);
+	}
+	
+	function getUsers() {
+		var tr;
+		
+		//remove all
+		$('#users tbody').html('');
+		
+		$.post('api/get_users_for_doc.php', {docID: docID}, function(response) {
+		
+			//console.log(response);
+			
+			//show owner
+			var html = '<td>' + response.owner.fullname + '</td>';
+			html += '<td><span class="muted">' + response.owner.email + '</span></td>';
+			html += '<td>owner</td>';
+			tr = $('<tr>').html(html);
+			$('#users tbody').append(tr);
+		
+			for (var i in response.users) {
+				
+				var user = response.users[i];
+				
+				var html = '<td>' + user.fullname + '</td>';
+				html += '<td><span class="muted">' + user.email + '</span></td>';
+				html += '<td>user</td>';
+				
+				tr = $('<tr>').html(html);
+				
+				$('#users tbody').append(tr);
+			}
+		
+		}, 'json');
+		
 	}
 	
 })();

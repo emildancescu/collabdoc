@@ -72,7 +72,7 @@
 				var file = response.files[i];
 				
 				var html = '<td>' + (parseInt(i)+1) + '</td>';
-				html += '<td>' + file.docname + '</td>';
+				html += '<td><a href="doc.php?id='+file.id+'" target="_blank">' + file.docname + '</a></td>';
 				html += '<td>' + file.data + '</td>';
 				html += '<td><a href="doc.php?id='+file.id+'" target="_blank" class="btn btn-small btn-success"><i class="icon-pencil icon-white"></i></a> ';
 				html += '<button type="button" class="btn btn-small btn-danger"><i class="icon-trash icon-white"></i></button></td>';
