@@ -65,7 +65,7 @@
 		
 		$.get('api/get_spread.php', {}, function(response) {
 		
-			console.log(response);
+			//console.log(response);
 		
 			for (var i in response.files) {
 				

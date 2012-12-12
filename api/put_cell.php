@@ -8,7 +8,7 @@ if (!$_SESSION['user']) exit();
 $userid = mysql_real_escape_string($_SESSION['user']['id']);
 $docid = mysql_real_escape_string($_POST['docid']);
 $cell_id = mysql_real_escape_string($_POST['cell_id']);
-$content = mysql_real_escape_string($_POST['content']);
+$content = mysql_real_escape_string(stripslashes($_POST['content']));
 
 $response = array();
 

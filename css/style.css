@@ -42,14 +42,16 @@
 }
 
 .cell {
-	width: 120px;
-	padding: 5px;
+	width: 130px;
 	border: 1px solid #CCC;
-	position: relative;
+}
+
+.cell-container {
+	height: 100%;
 }
 
 .cell-content {
-	overflow: hidden;
+	padding: 5px;
 }
 
 .cell-selected {
@@ -67,11 +69,16 @@
 
 .cell-label {
 	position: absolute;
-	font-size: 8px;
+	font-size: 10px;
 	padding: 0 5px;
 	color: #000;
 	top: -20px;
 	left: -3px;
+	display: none;
+}
+
+.cell-border:hover .cell-label {
+	display: block;
 }
 
 .header-cell {
@@ -79,6 +86,8 @@
 	text-align: center;
 	color: #999;
 	font-size: 12px;
+	padding: 5px;
+	width: 120px;
 }
 
 .row-header-cell {
@@ -89,6 +98,14 @@
 	position: absolute;
 	z-index: 1;
 	background: #DDD;
+}
+
+.oh {
+	overflow: hidden;
+}
+
+.pr {
+	position: relative;
 }
 
 

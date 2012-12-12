@@ -15,6 +15,8 @@
 		
 		adjustSize();
 		
+		poll();
+		
 		$('#table-wrapper').scroll(function() {
 			$('#column-header').scrollLeft($(this).scrollLeft());
 			$('#row-header').scrollTop($(this).scrollTop());
@@ -66,15 +68,24 @@
 		});
 		
 		$('#bold-btn').click(function() {
+			if (getSelectedCell().size() == 0) return;
+			
 			getSelectedCell().toggleClass('style-bold');
+			updateCell();
 		});
 		
 		$('#italic-btn').click(function() {
+			if (getSelectedCell().size() == 0) return;
+		
 			getSelectedCell().toggleClass('style-italic');
+			updateCell();
 		});
 		
 		$('.align-btn').click(function() {
+			if (getSelectedCell().size() == 0) return;
+			
 			getSelectedCell().css('text-align', $(this).attr('data-align'));
+			updateCell();
 		});
 		
 		$('#share-btn').click(function() {
@@ -123,23 +134,49 @@
 	}
 	
 	function insertCellContent(id, text, put) {
+		var cc = $('#' + id + ' .cell-content');
+		var td = $('#' + id + ' .cell-container');
+		var s = $('<span>');
+	
 		if (put) {
-			$('#' + id + ' .cell-content').text(text);
+			if (String.prototype.trim) text = text.trim();
+		
+			//insert nbsp if no text entered, to preserve cell dimensions
+			if (text == '') {
+				s.html('&nbsp;');
+			} else {
+				s.text(text);
+			}
 			
-			var outerHtml = $('#' + id + ' .cell-content').clone().wrap('<div>').parent().html();
+			cc.html(s);
+			
+			var outerHtml = cc.clone().wrap('<div>').parent().html();
 			$.post('api/put_cell.php', {docid: docID, cell_id: id, content: outerHtml });
 		} else {
-			$('#' + id + ' .cell-content').remove()
-			$('#' + id).append(text);
+			cc.remove()
+			td.append(unescape(text));
+			
+			cc = $('#' + id + ' .cell-content');
 		}
 				
 		var cell = id.split('-');
 		$('#rh' + cell[1]).height($('#tr'+cell[1]).height() - 11);
 		
+		//in order to address performance issues, cell will hide overflow only when necessary
+		if (cc.find('span').width() > td.width()) {
+			cc.addClass('oh');
+		} else {
+			cc.removeClass('oh');
+		}
 	}
 	
 	function getSelectedCell() {
 		return $('.cell-selected .cell-content');
+	}
+	
+	function updateCell() {
+		var id = getSelectedCell().parent().parent().attr('id');
+		insertCellContent(id, getSelectedCell().text(), true);
 	}
 	
 	function adjustSize() {
@@ -193,7 +230,7 @@
 		var table = $('<table>').css({'table-layout': 'fixed', 'width' : '0' });
 		var tr;
 		
-		for (var i = 1; i <= 25; i++) {
+		for (var i = 1; i <= 50; i++) {
 			tr = $('<tr>');
 			d = $('<td>').addClass('cell header-cell row-header-cell').text(i).attr('id', 'rh'+i);
 			tr.append(d);
@@ -210,15 +247,15 @@
 	}
 	
 	function generateTable() {
-		var table = $('<table>').css({'table-layout': 'fixed', 'width' : '0' });
+		var table = $('<table>').css({'table-layout': 'fixed', 'width' : '0' }).attr('cellpadding', '0');
 		var tr, td, cc;
 		
-		for (var i = 1; i <= 25; i++) {
+		for (var i = 1; i <= 50; i++) {
 			tr = $('<tr>').attr('id', 'tr'+i);
 			
 			for (var j = 1; j <= 26; j++) {
 				cc = $('<div>').addClass('cell-content').html('&nbsp;');
-				td = $('<td>').addClass('cell').attr('id', String.fromCharCode(64+j) + "-" + i).append(cc);
+				td = $('<td>').addClass('cell').attr('id', String.fromCharCode(64+j) + "-" + i).append($('<div>').addClass('cell-container').append(cc));
 				tr.append(td);
 			}
 			
@@ -262,34 +299,31 @@
 		
 	}
 	
-	(function poll(){
-		setTimeout(function() {
-		
-			$.get('api/get_online.php', {docid: docID, timestamp: timestamp}, function(response) {
+	function poll() {
+		$.get('api/get_online.php', {docid: docID, timestamp: timestamp}, function(response) {
 			
-				$('.cell-border').remove();
-				
-				for (var i in response.cells) {
-					
-					var label = $('<div>').addClass('cell-label').text(response.cells[i].fullname).css('background-color', response.cells[i].color);
-					var border = $('<div>').addClass('cell-border').css('border-color', response.cells[i].color).append(label);
-					
-					$('#' + response.cells[i].cell_id).append(border);
-				}
-				
-				for (var i in response.data) {
-				
-					insertCellContent(response.data[i].cell_id, response.data[i].content);
-				
-				}
-				
-				if (response.data.length > 0) timestamp = response.data[0].data;
-				
-				poll();
-				
-			}, 'json');
+			$('.cell-border').parent().removeClass('pr');
+			$('.cell-border').remove();
 			
-		}, 1000);
-	})();
+			for (var i in response.cells) {
+				
+				var label = $('<div>').addClass('cell-label').text(unescape(response.cells[i].fullname)).css('background-color', response.cells[i].color);
+				var border = $('<div>').addClass('cell-border').css('border-color', response.cells[i].color).append(label);
+				
+				$('#' + response.cells[i].cell_id + ' .cell-container').addClass('pr').append(border);
+			}
+			
+			for (var i in response.data) {
+			
+				insertCellContent(response.data[i].cell_id, response.data[i].content);
+			
+			}
+			
+			if (response.data.length > 0) timestamp = response.data[0].data;
+			
+			setTimeout(poll, 1000);
+			
+		}, 'json');
+	}
 	
 })();
