@@ -13,7 +13,7 @@ require('api/dbinfo.php');
 $docid = mysql_real_escape_string($_GET['id']);
 
 $query = "SELECT * FROM spreadsheets WHERE id='$docid' AND ( fk_userID ='$userid'
-         or id=(select fk_sheetID from sp_rights where fk_userID='$userid'))";
+         or id IN (select fk_sheetID from sp_rights where fk_userID='$userid'))";
 $result = mysql_query($query);
 
 if (!$result || mysql_num_rows($result) == 0) die ('not allowed');

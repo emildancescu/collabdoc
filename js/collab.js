@@ -4,6 +4,8 @@
 		init();
 	});
 	
+	var timestamp = '';
+	
 	function init() {
 		
 		generateColumnHeader();
@@ -32,19 +34,18 @@
 			if ($('.cell-content', this).hasClass('style-italic')) {
 				$('#italic-btn').addClass('active');
 			}
+			
+			//send selected cell id, cell status and document id
+			$.get('api/put_online.php', {docid: docID, cellid: $(this).attr('id'), locked: 0});
 		});
 		
 		$('#table-container td').dblclick(function() {
 			var id = $(this).attr('id');
 			
 			modal.title = "Edit cell " + id;
-			modal.default_text = $('#' + id).text();
+			modal.default_text = $('#' + id + ' .cell-content').text();
 			modal.callback = function(text) {
-				$('#' + id + ' .cell-content').text(text);
-				
-				var cell = id.split('-');
-				
-				$('#rh' + cell[1]).height($('#tr'+cell[1]).height() - 11);
+				insertCellContent(id, text, true);
 			}
 			
 			modal.show();
@@ -121,6 +122,22 @@
 		
 	}
 	
+	function insertCellContent(id, text, put) {
+		if (put) {
+			$('#' + id + ' .cell-content').text(text);
+			
+			var outerHtml = $('#' + id + ' .cell-content').clone().wrap('<div>').parent().html();
+			$.post('api/put_cell.php', {docid: docID, cell_id: id, content: outerHtml });
+		} else {
+			$('#' + id + ' .cell-content').remove()
+			$('#' + id).append(text);
+		}
+				
+		var cell = id.split('-');
+		$('#rh' + cell[1]).height($('#tr'+cell[1]).height() - 11);
+		
+	}
+	
 	function getSelectedCell() {
 		return $('.cell-selected .cell-content');
 	}
@@ -176,7 +193,7 @@
 		var table = $('<table>').css({'table-layout': 'fixed', 'width' : '0' });
 		var tr;
 		
-		for (var i = 1; i <= 100; i++) {
+		for (var i = 1; i <= 25; i++) {
 			tr = $('<tr>');
 			d = $('<td>').addClass('cell header-cell row-header-cell').text(i).attr('id', 'rh'+i);
 			tr.append(d);
@@ -196,7 +213,7 @@
 		var table = $('<table>').css({'table-layout': 'fixed', 'width' : '0' });
 		var tr, td, cc;
 		
-		for (var i = 1; i <= 100; i++) {
+		for (var i = 1; i <= 25; i++) {
 			tr = $('<tr>').attr('id', 'tr'+i);
 			
 			for (var j = 1; j <= 26; j++) {
@@ -244,5 +261,35 @@
 		}, 'json');
 		
 	}
+	
+	(function poll(){
+		setTimeout(function() {
+		
+			$.get('api/get_online.php', {docid: docID, timestamp: timestamp}, function(response) {
+			
+				$('.cell-border').remove();
+				
+				for (var i in response.cells) {
+					
+					var label = $('<div>').addClass('cell-label').text(response.cells[i].fullname).css('background-color', response.cells[i].color);
+					var border = $('<div>').addClass('cell-border').css('border-color', response.cells[i].color).append(label);
+					
+					$('#' + response.cells[i].cell_id).append(border);
+				}
+				
+				for (var i in response.data) {
+				
+					insertCellContent(response.data[i].cell_id, response.data[i].content);
+				
+				}
+				
+				if (response.data.length > 0) timestamp = response.data[0].data;
+				
+				poll();
+				
+			}, 'json');
+			
+		}, 1000);
+	})();
 	
 })();

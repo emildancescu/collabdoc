@@ -10,7 +10,7 @@ $response = array();
 $response['status'] = 'OK';
 
 $query = "select * from spreadsheets where fk_userID ='$userid'
-         or id=(select fk_sheetID from sp_rights where fk_userID='$userid')
+         or id IN (select fk_sheetID from sp_rights where fk_userID='$userid')
 		 ORDER BY data ASC";
 $result = mysql_query($query);
 $files = array();

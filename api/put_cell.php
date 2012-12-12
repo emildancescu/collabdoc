@@ -13,7 +13,7 @@ $content = mysql_real_escape_string($_POST['content']);
 $response = array();
 
 $query = "select * from spreadsheets where (fk_userID ='$userid'
-         or id=(select fk_sheetID from sp_rights where fk_userID='$userid')) and id='$docid'";
+         or id IN (select fk_sheetID from sp_rights where fk_userID='$userid')) and id='$docid'";
 $result = mysql_query($query);		 
 
  if (mysql_num_rows($result) == 0) {
