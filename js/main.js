@@ -55,6 +55,7 @@
 			
 			modal.show();
 		});
+		
 	}
 	
 	function getDocs() {
@@ -75,14 +76,40 @@
 				html += '<td><a href="doc.php?id='+file.id+'" target="_blank">' + file.docname + '</a></td>';
 				html += '<td>' + file.data + '</td>';
 				html += '<td><a href="doc.php?id='+file.id+'" target="_blank" class="btn btn-small btn-success"><i class="icon-pencil icon-white"></i></a> ';
-				html += '<button type="button" class="btn btn-small btn-danger"><i class="icon-trash icon-white"></i></button></td>';
+				html += '<a href="#" rel="'+file.id+'" class="btn btn-small btn-danger delete-btn"><i class="icon-trash icon-white"></i></a></td>';
 				
 				tr = $('<tr>').html(html);
 				
 				$('#docs tbody').append(tr);
 			}
+			
+			bindDelete();
 		
 		}, 'json');
+		
+	}
+	
+	function bindDelete() {
+		
+		$('.delete-btn').click(function() {
+		
+			var msg = 'Delete?';
+		
+			if ($(this).text() == msg) {
+				
+				$.get('api/del_doc.php', { docID: $(this).attr('rel') });
+				
+				$(this).parent().parent().fadeOut('fast');
+				
+			} else {
+				
+				$(this).text(msg);
+				
+			}
+		
+			return false;
+		
+		});
 		
 	}
 

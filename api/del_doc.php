@@ -16,7 +16,7 @@ if ($_SESSION['user'] == null)
 	exit();
 }
 
-$docId = mysql_real_escape_string($_POST['docID']);
+$docId = mysql_real_escape_string($_GET['docID']);
 $ownerId = 0;
 
 // check to see if the specified document exists

@@ -62,6 +62,8 @@
 			modal.default_text = $('#document-title').text();
 			modal.callback = function(text) {
 				$('#document-title').text(text);
+				
+				$.post('api/set_doc_name.php', {docID: docID, docName: text});
 			}
 			
 			modal.show();
