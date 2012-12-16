@@ -55,7 +55,7 @@ if (mysql_num_rows($result) == 0)
 // check if the user making the request has rights on the specified document
 while ($row = mysql_fetch_assoc($result))
 {
-	$ownerId = $row['fk_userId'];
+	$ownerId = $row['fk_userID'];
 
 	// if the user is not the owner of the document
 	if ($_SESSION['user']['id'] != $row['fk_userID'])
